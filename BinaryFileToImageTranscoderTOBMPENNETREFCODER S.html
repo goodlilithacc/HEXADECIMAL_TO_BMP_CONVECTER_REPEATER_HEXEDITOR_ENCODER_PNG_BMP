@@ -88,10 +88,22 @@ input:Toggle{background-color:blue;}
 }
 </style>
 		<div id="divImageDisplay" class="zoom"></div>
+		<button style="width: 100px; height: 100px;" onclick="scaleButton()">ZOOM EZOOM S</button>
+		<br /><br /><br />
 		<button style="width: 100px; height: 100px;" onclick="buttonImageSaveToFile_Clicked();">Save Image</button><br />
 	</div>
 
 </div>
+
+<script>
+  function scaleButton() {
+    const button = document.getElementById("divImageDisplay");
+    button.style.transform = "scale(17.1)";
+    setTimeout(() => {
+      button.style.transform = "scale(1)";
+    }, 2000);
+  }
+</script>
 
 <script type="text/javascript">
 
