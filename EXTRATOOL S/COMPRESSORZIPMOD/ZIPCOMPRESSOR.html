@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ZIP File Compressor</title>
+    <script src="jszip.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+        input[type="file"] {
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h2>ZIP File Compressor</h2>
+    <input type="file" id="fileInput" multiple>
+    <br>
+    <button id="compressBtn">Compress to ZIP</button>
+
+    <script>
+        document.getElementById('compressBtn').addEventListener('click', async () => {
+            const files = document.getElementById('fileInput').files;
+            if (!files.length) {
+                alert("Please select at least one file.");
+                return;
+            }
+
+            try {
+                const zip = new JSZip();
+
+                // Add each selected file to the ZIP
+                for (let file of files) {
+                    const content = await file.arrayBuffer();
+                    zip.file(file.name, content);
+                }
+
+                // Generate ZIP as a Blob
+                const blob = await zip.generateAsync({ type: "blob" });
+
+                // Create a download link
+                const link = document.createElement("a");
+                link.href = URL.createObjectURL(blob);
+                link.download = "compressed_files.zip";
+                link.click();
+
+                // Cleanup
+                URL.revokeObjectURL(link.href);
+            } catch (error) {
+                console.error("Error creating ZIP:", error);
+                alert("An error occurred while compressing files.");
+            }
+        });
+    </script>
+</body>
+</html>
